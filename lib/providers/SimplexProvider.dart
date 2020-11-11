@@ -95,11 +95,13 @@ class Simplex extends ChangeNotifier {
           if(!this._optimalityCheck()) {
             _passNewEquationsToOld();
             _passNewzFunctionToOld();
+            this.firstEquations = this.equations;
+            this.firstFunction = this.zFunction;
           }else{
             this.optimized = true;
           }
           count++;
-        }while(!this._optimalityCheck() && count < this.variables);
+        }while(!this._optimalityCheck() && count < this.zFunction.values.length);
       }
       this.solved = true;
     }catch(error){
@@ -343,7 +345,7 @@ class Simplex extends ChangeNotifier {
     int out = 0;
     String varInKey = this.zFunction.values.keys.elementAt(varIn);
     for(Equation eq in fases ?  this.faseEquations : this.equations){
-      if(aux >= ( eq.res / eq.values[varInKey]) 
+      if(aux >= ( eq.res / eq.values[varInKey]) && eq.values[varInKey] >= 0 
       ){
         if(fases){
           aux = (eq.res / eq.values[varInKey]);
@@ -401,7 +403,8 @@ class Simplex extends ChangeNotifier {
           double pivotValue = this.pivotRow.values[key];
           double value = fases ? this.faseEquations[i].values[key] : this.equations[i].values[key];
           if(pivotValue == null){
-            values[key] = double.parse(value.toStringAsFixed(2));
+            if(value == null) values[key] = 0.0;
+            else values[key] = double.parse(value.toStringAsFixed(2));
           }else if(value == null){
             values[key] =  double.parse((inVal * pivotValue).toStringAsFixed(2));
           }else{
