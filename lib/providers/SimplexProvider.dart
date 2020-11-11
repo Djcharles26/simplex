@@ -191,6 +191,8 @@ class Simplex extends ChangeNotifier {
     this.faseEquations = new List<Equation>();
     this.firstFunction = new Equation();
     this.firstEquations = new List();
+    this.updatedEquations = new List();
+    this.updatedFunction = new Equation();
     this.pivotRow = new Equation(pivot: true);
     this.varIn = -1;
     this.varOut = -1;
@@ -475,5 +477,10 @@ class Simplex extends ChangeNotifier {
       rows.add(row);
     }
     return rows;
+  }
+
+  void clean() {
+    this._cleanEquations();
+    notifyListeners();
   } 
 }

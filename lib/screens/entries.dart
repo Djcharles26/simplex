@@ -13,13 +13,19 @@ class EntriesPage extends StatefulWidget {
 
 class _EntriesPageState extends State<EntriesPage> {
   int _variableCount = 2, _restrictionCount = 2;
+  GlobalKey<FormState> _formKey = new GlobalKey();
   int action = 0;
   List<Equation> equations = new List();
   Equation zFunction ;
+  String cleaner = '';
 
   @override
   void initState() {
     super.initState();
+    init();
+  }
+
+  void init(){
     this.zFunction = new Equation(variables: _variableCount);
     for(int i=0; i<this._restrictionCount; i++){
       Equation rest = new Equation(variables: this._variableCount);
@@ -57,48 +63,89 @@ class _EntriesPageState extends State<EntriesPage> {
             ),
             SizedBox(height: 16),
             Text("Ingresa la función objetivo: ", style:TextStyle(fontSize: 28, fontWeight: FontWeight.bold)),
-            this._zFunctionInput(),
-            Center(
-              child: this._restrictions(),
+            Form(
+              key: this._formKey,
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.start,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                   this._zFunctionInput(),
+                    Center(
+                      child: this._restrictions(),
+                    ),
+                ],
+              ),
             ),
+            // this._zFunctionInput(),
+            // Center(
+            //   child: this._restrictions(),
+            // ),
             SizedBox(height: 16),
-            Center(
-              child: RaisedButton(
-                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
-                color: Colors.red,
-                onPressed: (){
-                  try{
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              mainAxisSize: MainAxisSize.max,
+              children: [
+                RaisedButton(
+                  shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+                  color: Colors.red,
+                  onPressed: (){
+                    try{
 
-                    Provider.of<Simplex>(context,listen:false).processInfo(zFunction, equations, action == 0, this._variableCount);
-                  }catch(error){
-                    print(error);
-                    showDialog(
-                      context: context,
-                      child: AlertDialog(
-                        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
-                        title: Text("¡Error!",textAlign: TextAlign.center, style:TextStyle(fontSize: 28,fontWeight: FontWeight.w600, color: Colors.red)),
-                        content: Text("Error al procesar la información, revise que todos sus campos sean correctos", textAlign: TextAlign.center, style:TextStyle(fontSize: 18)),
-                        actions: [
-                          FlatButton(
-                            onPressed: (){
-                              Navigator.pop(this.context);
-                            },
-                            child: Text("Okay", style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold, color: Colors.black),),
-                            
-                          )
-                        ],
-                      )
-                    );
-                  }
-                },
-                child: Container(
-                  width: 155,
-                  height: 75,
-                  child: Center(
-                    child: Text("Resolver", style:TextStyle(fontSize: 24, fontWeight: FontWeight.bold,color: Colors.white)),
+                      Provider.of<Simplex>(context,listen:false).processInfo(zFunction, equations, action == 0, this._variableCount);
+                    }catch(error){
+                      print(error);
+                      showDialog(
+                        context: context,
+                        child: AlertDialog(
+                          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+                          title: Text("¡Error!",textAlign: TextAlign.center, style:TextStyle(fontSize: 28,fontWeight: FontWeight.w600, color: Colors.red)),
+                          content: Text("Error al procesar la información, revise que todos sus campos sean correctos", textAlign: TextAlign.center, style:TextStyle(fontSize: 18)),
+                          actions: [
+                            FlatButton(
+                              onPressed: (){
+                                Navigator.pop(this.context);
+                              },
+                              child: Text("Okay", style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold, color: Colors.black),),
+                              
+                            )
+                          ],
+                        )
+                      );
+                    }
+                  },
+                  child: Container(
+                    width: 155,
+                    height: 75,
+                    child: Center(
+                      child: Text("Resolver", style:TextStyle(fontSize: 24, fontWeight: FontWeight.bold,color: Colors.white)),
+                    ),
                   ),
                 ),
-              ),
+                RaisedButton(
+                  shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+                  color: Colors.white,
+                  onPressed: (){
+                    this.setState(() {
+                      this._variableCount = 2;
+                      this._restrictionCount = 2;
+                      action = 0;
+                      init();
+                      this._formKey.currentState.reset();
+                    });
+
+                    Provider.of<Simplex>(context,listen:false).clean();
+                    
+                  },
+                  child: Container(
+                    width: 155,
+                    height: 75,
+                    child: Center(
+                      child: Text("Limpiar", style:TextStyle(fontSize: 24, fontWeight: FontWeight.bold,color: Colors.red)),
+                    ),
+                  ),
+                ),
+              ],
             ),
             Divider(),
             SolutionPage(),
@@ -132,6 +179,7 @@ class _EntriesPageState extends State<EntriesPage> {
                     Container(
                       width: 35,
                       child: TextFormField(
+                        initialValue: cleaner,
                         keyboardType: TextInputType.number,
                         onChanged: (val){
                           this.setState(() {
@@ -213,6 +261,7 @@ class _EntriesPageState extends State<EntriesPage> {
                           Container(
                             width: 35,
                             child: TextFormField(
+                              initialValue: cleaner,
                               keyboardType: TextInputType.number,
                               onChanged: (val){
                                 this.equations[i].res = double.parse(val);
@@ -244,6 +293,7 @@ class _EntriesPageState extends State<EntriesPage> {
         Container(
           width: 35,
           child: TextFormField(
+            initialValue: cleaner,
             keyboardType: TextInputType.number,
             onChanged: (val){
               this.setState(() {
