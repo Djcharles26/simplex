@@ -452,10 +452,24 @@ class Simplex extends ChangeNotifier {
         ]
       ));
     }
-    for(int i=0; i<this.newEquations.length; i++){
+    Map<String,double> results = new Map();
+    for(String key in this.newZFunction.values.keys){
+      this.newEquations.forEach((eq) {
+        if(eq.name == key){
+          results[key] = eq.res;
+        }else{
+          if(!(results[key] != null && results[key] != 0.0)){
+
+            results[key] = 0.0;
+          }
+        }
+      });
+    }
+
+    for(String key in results.keys){
       row = new TableRow(
         children: [
-          TableCell(child: Text("${this.newEquations[i].name} = ${this.newEquations[i].res}", textAlign: TextAlign.center, style:TextStyle(fontSize: 28, fontWeight: FontWeight.bold, color: Colors.blue),),)
+          TableCell(child: Text("$key = ${results[key]}", textAlign: TextAlign.center, style:TextStyle(fontSize: 28, fontWeight: FontWeight.bold, color: Colors.blue),),)
         ]
       );
       rows.add(row);
