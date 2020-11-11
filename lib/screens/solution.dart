@@ -156,7 +156,25 @@ class _SolutionPageState extends State<SolutionPage> {
                   : Text("El sistema no tiene solución porque la función objetivo ya es óptima pero no han desaparecido las variables artificiales", style:TextStyle(fontWeight: FontWeight.w700)),
               ],
             )
-            : Text("Seleccionando como criterio de entrada a ${simplex.getInName()}", style:TextStyle(fontWeight: FontWeight.bold)),
+            : Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisAlignment: MainAxisAlignment.start,
+              children: [
+                SizedBox(height: 32),
+                Text("Despues de procesar la tabla:", style:TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
+                Center(
+                  child: Table(
+                    border: TableBorder.all(color: Colors.black, width: 1),
+                    children: [
+                      _tableHeader(simplex, initial: true),
+                      simplex.updatedFunction.toRow(simplex.updatedFunction.header(), z:true),
+                    ]..addAll(simplex.updatedEquations.map<TableRow>((e) => e.toRow(simplex.updatedFunction.header()))
+                    ),
+                  ),
+                ),
+                Text("Seleccionando como criterio de entrada a ${simplex.getInName()}", style:TextStyle(fontWeight: FontWeight.bold))
+              ],
+            )
         ],
       ),
     );

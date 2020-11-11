@@ -5,8 +5,8 @@ import 'package:simplex/models/equation.dart';
 
 class Simplex extends ChangeNotifier {
 
-  Equation zFunction, newZFunction, faseIFunction, firstFunction = Equation();
-  List<Equation> equations, newEquations = new List(), faseEquations = new List(), firstEquations = List();
+  Equation zFunction, newZFunction, faseIFunction, firstFunction = Equation(), updatedFunction = Equation();
+  List<Equation> equations, newEquations = new List(), faseEquations = new List(), firstEquations = List(), updatedEquations = new List();
   Equation pivotRow = new Equation(pivot: true);
   bool action = false;
   bool solved = false;
@@ -95,8 +95,10 @@ class Simplex extends ChangeNotifier {
           if(!this._optimalityCheck()) {
             _passNewEquationsToOld();
             _passNewzFunctionToOld();
-            this.firstEquations = this.equations;
-            this.firstFunction = this.zFunction;
+            this.updatedFunction = new Equation.from(this.zFunction);
+            updatedEquations.clear();
+            for(Equation eq in this.equations) updatedEquations.add(Equation.from(eq));
+            
           }else{
             this.optimized = true;
           }
@@ -111,7 +113,7 @@ class Simplex extends ChangeNotifier {
     notifyListeners();
   }
 
-  void _passNewzFunctionToOld({fases: true}){
+  void _passNewzFunctionToOld({fases: false}){
     if(fases){
       this.faseIFunction = Equation.from(this.newZFunction);
     }else{
