@@ -1,0 +1,17 @@
+FROM cirrusci/flutter:2.5.0
+
+RUN sudo apt update && sudo apt install -y gdebi-core libnss3 libgconf-2-4 wget
+RUN wget https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb
+RUN sudo gdebi -n google-chrome-stable_current_amd64.deb
+
+WORKDIR /home/gepp
+RUN wget https://chromedriver.storage.googleapis.com/95.0.4638.10/chromedriver_linux64.zip
+RUN unzip chromedriver_linux64.zip
+
+RUN sudo chmod +x chromedriver
+
+RUN flutter config --enable-web && flutter doctor
+
+#RUN flutter pub get
+
+CMD ["/bin/bash"]
