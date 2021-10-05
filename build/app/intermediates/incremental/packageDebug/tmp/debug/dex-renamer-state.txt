@@ -1,4 +1,0 @@
-#Wed Nov 11 10:50:53 CST 2020
-base.0=/home/djcharles26/Documents/Universidad/septimo semestre/Modelos/simplex/simplex/build/app/intermediates/dex/debug/mergeDexDebug/out/classes.dex
-renamed.0=classes.dex
-path.0=classes.dex
