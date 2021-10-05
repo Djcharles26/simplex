@@ -40,7 +40,6 @@ class _SolutionPageState extends State<SolutionPage> {
 
   @override
   Widget build(BuildContext context) {
-    double w = MediaQuery.of(context).size.width;
     double h = MediaQuery.of(context).size.height;
     return Consumer<Simplex>(
       builder: (context,simplex, _) {
@@ -184,7 +183,7 @@ class _SolutionPageState extends State<SolutionPage> {
 
     List<String> header = fase ? simplex.faseIFunction.header() : initial ? simplex.firstFunction.header() :   simplex.zFunction.header();
     
-    List<TableCell> cells = new List();
+    List<TableCell> cells = [];
     cells.add(TableCell(child: Container()));
     cells.add(TableCell(child: Center(child: Text(simplex.action ? "Z" : "G", style:TextStyle(fontSize: 18, fontWeight: FontWeight.bold, color: Colors.red)))));
     header.forEach((h) {

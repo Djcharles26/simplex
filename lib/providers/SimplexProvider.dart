@@ -6,7 +6,7 @@ import 'package:simplex/models/equation.dart';
 class Simplex extends ChangeNotifier {
 
   Equation zFunction, newZFunction, faseIFunction, firstFunction = Equation(), updatedFunction = Equation();
-  List<Equation> equations, newEquations = new List(), faseEquations = new List(), firstEquations = List(), updatedEquations = new List();
+  List<Equation> equations, newEquations = [], faseEquations = [], firstEquations = [], updatedEquations = [];
   Equation pivotRow = new Equation(pivot: true);
   bool action = false;
   bool solved = false;
@@ -14,7 +14,7 @@ class Simplex extends ChangeNotifier {
   int varIn = -1, varOut = -1;
   bool optimized = false, faseIOptimized = false, inartificial = false;
   bool requireFases = false;
-  List<String> usedVariables = new List();
+  List<String> usedVariables = [];
 
   void _fillFirstEquations(){
     this.firstFunction = Equation.from(zFunction);
@@ -36,7 +36,7 @@ class Simplex extends ChangeNotifier {
     
     this.zFunction = Equation.from(zFunction); //Set A clone of zFunction
     if(!action) this.zFunction.flipEquation();
-    this.equations = new List(); //Set a clone of equations lists
+    this.equations = []; //Set a clone of equations lists
     for(Equation eq in equations){
       Equation e = new Equation.from(eq);
       this.equations.add(e);
@@ -145,7 +145,7 @@ class Simplex extends ChangeNotifier {
   }
 
   void _sumArtificialRows(){
-    List<Equation> artificials = new List();
+    List<Equation> artificials = [];
 
     for(Equation eq in this.faseEquations){
       if(eq.name.contains("A"))
@@ -184,14 +184,14 @@ class Simplex extends ChangeNotifier {
 
   void _cleanEquations(){
     this.zFunction = new Equation();
-    this.equations = new List<Equation>();
+    this.equations = [];
     this.newZFunction = new Equation();
-    this.newEquations = new List<Equation>();
+    this.newEquations = [];
     this.faseIFunction = new Equation();
-    this.faseEquations = new List<Equation>();
+    this.faseEquations = [];
     this.firstFunction = new Equation();
-    this.firstEquations = new List();
-    this.updatedEquations = new List();
+    this.firstEquations = [];
+    this.updatedEquations = [];
     this.updatedFunction = new Equation();
     this.pivotRow = new Equation(pivot: true);
     this.varIn = -1;
@@ -294,7 +294,7 @@ class Simplex extends ChangeNotifier {
   }
 
   List<String> _getRowNamesAsList({fases: false}){
-    List<String> rows = new List();
+    List<String> rows = [];
     if(fases){
       this.faseEquations.forEach((eq) {
         rows.add(eq.name);
@@ -439,7 +439,7 @@ class Simplex extends ChangeNotifier {
   }
 
   List<TableRow> optimizedValues(){
-    List<TableRow> rows = new List();
+    List<TableRow> rows = [];
     TableRow row = new TableRow(
       children: [
         TableCell(child: Center(child: Text("${action ? "Z": "G"} = ${newZFunction.res}", style:TextStyle(fontSize: 28, fontWeight: FontWeight.bold, color: Colors.blue))),),

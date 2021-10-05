@@ -15,7 +15,7 @@ class _EntriesPageState extends State<EntriesPage> {
   int _variableCount = 2, _restrictionCount = 2;
   GlobalKey<FormState> _formKey = new GlobalKey();
   int action = 0;
-  List<Equation> equations = new List();
+  List<Equation> equations = [];
   Equation zFunction ;
   String cleaner = '';
 
@@ -86,9 +86,12 @@ class _EntriesPageState extends State<EntriesPage> {
               crossAxisAlignment: CrossAxisAlignment.center,
               mainAxisSize: MainAxisSize.max,
               children: [
-                RaisedButton(
-                  shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
-                  color: Colors.red,
+                ElevatedButton(
+                  style: ButtonStyle(
+                    backgroundColor: MaterialStateProperty.all(Colors.red),
+                    shape: MaterialStateProperty.all( RoundedRectangleBorder(borderRadius: BorderRadius.circular(12))),
+                    overlayColor: MaterialStateProperty.all(Colors.transparent)
+                  ),
                   onPressed: (){
                     try{
 
@@ -97,12 +100,12 @@ class _EntriesPageState extends State<EntriesPage> {
                       print(error);
                       showDialog(
                         context: context,
-                        child: AlertDialog(
+                        builder:(ctx) => AlertDialog(
                           shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
                           title: Text("¡Error!",textAlign: TextAlign.center, style:TextStyle(fontSize: 28,fontWeight: FontWeight.w600, color: Colors.red)),
                           content: Text("Error al procesar la información, revise que todos sus campos sean correctos", textAlign: TextAlign.center, style:TextStyle(fontSize: 18)),
                           actions: [
-                            FlatButton(
+                            TextButton(
                               onPressed: (){
                                 Navigator.pop(this.context);
                               },
@@ -122,9 +125,12 @@ class _EntriesPageState extends State<EntriesPage> {
                     ),
                   ),
                 ),
-                RaisedButton(
-                  shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
-                  color: Colors.white,
+                ElevatedButton(
+                  style: ButtonStyle(
+                    backgroundColor: MaterialStateProperty.all(Colors.white),
+                    shape: MaterialStateProperty.all(RoundedRectangleBorder(borderRadius: BorderRadius.circular(12))),
+                    overlayColor: MaterialStateProperty.all(Colors.transparent)
+                  ),
                   onPressed: (){
                     this.setState(() {
                       this._variableCount = 2;
@@ -334,9 +340,12 @@ class _EntriesPageState extends State<EntriesPage> {
         SizedBox(width: 8),
         Container(
           width: 35,
-          child: RaisedButton(
-            color: Colors.red,
-            shape: RoundedRectangleBorder(borderRadius: BorderRadius.only(topLeft: Radius.circular(12), bottomLeft: Radius.circular(12))),
+          child: ElevatedButton(
+            style: ButtonStyle(
+              backgroundColor: MaterialStateProperty.all(Colors.red),
+              shape: MaterialStateProperty.all(RoundedRectangleBorder(borderRadius: BorderRadius.only(topLeft: Radius.circular(12), bottomLeft: Radius.circular(12)))),
+              overlayColor: MaterialStateProperty.all(Colors.transparent)
+            ),
             child: Center(child: Text("+", style:TextStyle(fontSize: 18))),
             onPressed: (){
               if(variable){
@@ -364,8 +373,11 @@ class _EntriesPageState extends State<EntriesPage> {
         ),
         Container(
           width: 35,
-          child: RaisedButton(
-            shape: RoundedRectangleBorder(borderRadius: BorderRadius.only(topRight: Radius.circular(12), bottomRight: Radius.circular(12))),
+          child: ElevatedButton(
+            style: ButtonStyle(
+              shape: MaterialStateProperty.all(RoundedRectangleBorder(borderRadius: BorderRadius.only(topRight: Radius.circular(12), bottomRight: Radius.circular(12)))),
+              overlayColor: MaterialStateProperty.all(Colors.transparent)
+            ),
             child: Center(child: Text("-", style:TextStyle(fontSize: 18))),
             onPressed: (){
               if(variable){

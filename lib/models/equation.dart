@@ -12,7 +12,7 @@ class Equation {
 
   Equation({int variables= 2, bool pivot=false}){
     this._values = new Map();
-    this.signs = new List();
+    this.signs = [];
     this.res = 0.0;
     this.pivot = pivot;
     this.logical = ">=";
@@ -154,7 +154,7 @@ class Equation {
   }
 
   TableRow toRow(List<String> headers , {bool z= false, int pivot: -1}){
-    List<TableCell> cells = new List();
+    List<TableCell> cells = [];
     
     cells.add(TableCell(child: Center(child: Text(name, style:TextStyle(fontSize: 18, color: Colors.red, fontWeight: FontWeight.bold)))));
     cells.add(TableCell(child: Center(child: Text(z ? "1" : "0", style:TextStyle(fontSize: 16)))));
@@ -171,7 +171,7 @@ class Equation {
   }
 
   TableRow getOutHeader(int variable){
-    List<TableCell> cells = new List();
+    List<TableCell> cells = [];
     String v = this._values.keys.elementAt(variable);
     cells.add(TableCell(child: Container()));
     cells.add(TableCell(child: Center(child: Text(v, style:TextStyle(fontSize: 18, fontWeight: FontWeight.bold, color: Colors.red)),)));
@@ -181,7 +181,7 @@ class Equation {
   }
 
   TableRow getOutRow(int variable, {z=false}){
-    List<TableCell> cells = new List();
+    List<TableCell> cells = [];
     String v = this._values.keys.elementAt(variable);  
     cells.add(TableCell(child: Center(child: Text(name, style:TextStyle(fontSize: 18, color: Colors.red, fontWeight: FontWeight.bold)))));
 
@@ -198,7 +198,7 @@ class Equation {
   }
 
   List<String> header(){
-    List<String> header = List();
+    List<String> header = [];
     header.addAll(this.values.keys.where((e)=> e.contains("X")).toList());
     header.addAll(this.values.keys.where((e)=> e.contains("H")).toList());
     header.addAll(this.values.keys.where((e)=> e.contains("A")).toList());
