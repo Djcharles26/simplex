@@ -20,20 +20,28 @@ class _SolutionPageState extends State<SolutionPage> {
   List<Widget> _buildPageIndicator(){
     List<Widget> list = [];
     for(int i=0; i<3; i++){
-      list.add(i==_currPage ? _indicator(true) : _indicator(false));
+      list.add(i==_currPage ? _indicator(true, i) : _indicator(false, i));
     }
     return list;
   }
 
-  Widget _indicator(bool active){
-    return AnimatedContainer(
-      duration: Duration(milliseconds: 150),
-      margin: EdgeInsets.symmetric(horizontal: 8.0),
-      height: 8.0,
-      width: active ? 16.0 : 8.0,
-      decoration: BoxDecoration(
-        color: active ? Colors.black : Colors.red,
-        borderRadius: BorderRadius.all(Radius.circular(12))
+  Widget _indicator(bool active, int index){
+    return InkWell(
+      onTap:()  {
+        _pageController.animateToPage(index, duration: const Duration(milliseconds: 300), curve: Curves.easeIn);
+        setState(() {
+          _currPage = index;
+        });
+      },
+      child: AnimatedContainer(
+        duration: Duration(milliseconds: 150),
+        margin: EdgeInsets.symmetric(horizontal: 8.0),
+        height: 8.0,
+        width: active ? 16.0 : 8.0,
+        decoration: BoxDecoration(
+          color: active ? Colors.black : Colors.red,
+          borderRadius: BorderRadius.all(Radius.circular(12))
+        ),
       ),
     );
   }
@@ -43,37 +51,41 @@ class _SolutionPageState extends State<SolutionPage> {
     double h = MediaQuery.of(context).size.height;
     return Consumer<Simplex>(
       builder: (context,simplex, _) {
-        return simplex.solved ?  Container(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            children: [
-              Container(
-                height: h*0.8,
-                child: PageView(
-                  physics: ClampingScrollPhysics(),
-                  controller: _pageController,
-                  onPageChanged: (int page){
-                    this.setState(() {
-                      this._currPage = page;
-                    });
-                  },
-                  children: [
-                    _first(simplex),
-                    simplex.requireFases ? 
-                    _faseII(simplex) : _cociente(simplex),
-                    simplex.requireFases ? _cociente(simplex) : Container(),
-                  ],
-                ),
-              ),
-              Container(
-                  height: h * 0.1,
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: _buildPageIndicator(),
+        return simplex.solved ?  Stack(
+          children: [
+            Container(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.stretch,
+                children: [
+                  Container(
+                    height: h*0.8,
+                    child: PageView(
+                      physics: ClampingScrollPhysics(),
+                      controller: _pageController,
+                      onPageChanged: (int page){
+                        this.setState(() {
+                          this._currPage = page;
+                        });
+                      },
+                      children: [
+                        _first(simplex),
+                        simplex.requireFases ? 
+                        _faseII(simplex) : _cociente(simplex),
+                        simplex.requireFases ? _cociente(simplex) : Container(),
+                      ],
+                    ),
                   ),
-                )
-            ],
-          ),
+                  Container(
+                      height: h * 0.1,
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: _buildPageIndicator(),
+                      ),
+                    )
+                ],
+              ),
+            ),
+          ],
         ) : Container();
       }
     );
